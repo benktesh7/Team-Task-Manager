@@ -1,0 +1,12 @@
+{
+  "name": "taskflow",
+  "version": "1.0.0",
+  "description": "Team Task Manager",
+  "scripts": {
+    "start": "node backend/src/app.js",
+    "dev:backend": "cd backend && npm run dev",
+    "install:backend": "cd backend && npm install",
+    "db:push": "cd backend && npx prisma db push",
+    "db:seed": "cd backend && npm run db:seed"
+  }
+}
