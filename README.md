@@ -1,156 +1,108 @@
-# TaskFlow — Team Task Manager
+# Team Task Manager (TaskFlow)
 
-A full-stack web app I built for managing team projects and tasks. You can create projects, invite teammates, assign tasks, track progress, and get notified when something's assigned to you. There's also a role system — admins can manage the whole workspace, members just work within their projects.
+Hey there! This is a full-stack web application I built to help teams manage their projects and track tasks easily. I designed it to be a clean, functional Kanban-style board where you can invite teammates, assign tasks, and keep track of who is doing what.
 
----
+I built this project to demonstrate my full-stack skills, from designing the relational database to building out the API and connecting it to a responsive vanilla JavaScript frontend. 
 
-## What it does
+## Features
 
-- **Projects** — create a project, set a color and deadline, invite people by email
-- **Kanban board** — tasks are split into To Do / In Progress / In Review / Done columns
-- **Tasks** — assign them to teammates, set priority and due dates, leave comments
-- **Dashboard** — see your tasks, what's overdue, what's coming up this week
-- **Notifications** — get notified when someone assigns a task to you
-- **Role-based access** — admins can manage members and delete anything; members work within their own projects
+- **Project Workspaces:** Create projects, set deadlines, and invite team members using their email.
+- **Kanban Task Board:** Move tasks across To Do, In Progress, In Review, and Done columns.
+- **Task Assignments:** Assign tasks to specific teammates, set priorities, and add comments.
+- **Role-Based Access (RBAC):** 
+  - **Admins** have full control over the workspace (can delete projects, manage users).
+  - **Members** can only interact with projects they've been invited to.
+- **Real-Time Dashboard:** Get a quick overview of pending tasks, overdue items, and upcoming deadlines.
+- **Notifications:** An in-app bell notification system alerts you when you get assigned a new task.
 
----
+## Tech Stack
 
-## Tech used
+Here's the technology I used to put this together:
 
-| Part | Stack |
-|---|---|
-| Backend | Node.js + Express |
-| Database | MySQL with Prisma ORM |
-| Auth | JWT tokens |
-| Frontend | Vanilla HTML, CSS, JavaScript |
-| Deploy | Railway |
+- **Backend:** Node.js with Express.js
+- **Database:** MySQL, managed using Prisma ORM
+- **Authentication:** JWT (JSON Web Tokens) for secure, stateless sessions
+- **Frontend:** Pure HTML, CSS, and Vanilla JavaScript (No heavy frameworks, keeps it fast and simple)
+- **Deployment:** Hosted live on Railway
 
----
+## Live Demo
 
-## Running it locally
+You can check out the live version of the project here: 
+👉 **[https://taskflow-production-f5cd.up.railway.app](https://taskflow-production-f5cd.up.railway.app)**
 
-You'll need Node.js (v18+) and a MySQL server running.
+*Feel free to create your own account or use the demo accounts (if seeded).*
 
-### 1. Backend setup
+## How to Run It Locally
+
+If you want to run this code on your own machine, follow these steps. You will need Node.js (v18+) and a local MySQL server installed.
+
+### 1. Database & Backend Setup
+
+First, install the dependencies from the root of the project:
 
 ```bash
-cd backend
 npm install
-cp .env.example .env
 ```
 
-Then open `.env` and fill in your MySQL connection string:
+Next, duplicate the `.env.example` file inside the `backend` folder and name it `.env`. Update it with your local MySQL database credentials:
 
-```
+```env
 DATABASE_URL="mysql://root:yourpassword@localhost:3306/taskmanager"
-JWT_SECRET="make-this-something-long-and-random"
-```
-
-Push the database schema:
-
-```bash
-npx prisma db push
-```
-
-Seed some demo data (optional but recommended):
-
-```bash
-node src/seed.js
-```
-
-Start the server:
-
-```bash
-npm run dev
-```
-
-The backend runs at `http://localhost:5000` and also serves the frontend at that same address.
-
-### 2. Frontend
-
-Open `http://localhost:5000` in your browser. That's it — the backend serves the frontend files directly.
-
-If you want to run the frontend separately during development:
-
-```bash
-npx serve frontend -p 3000
-```
-
-Then the frontend is at `http://localhost:3000` and it'll talk to the API at port 5000.
-
-**Demo accounts (after seeding):**
-- Admin: `admin@taskmanager.com` / `admin123`
-- Member: `member@taskmanager.com` / `member123`
-
----
-
-## Deploying to Railway
-
-1. Push this repo to GitHub
-2. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub repo
-3. Add a **MySQL** plugin from the Railway dashboard
-4. Copy the `DATABASE_URL` from the MySQL plugin's Connect tab
-5. Set these environment variables in your Railway service:
-
-```
-DATABASE_URL=      ← from the MySQL plugin
-JWT_SECRET=        ← any long random string
-NODE_ENV=production
+JWT_SECRET="your-secret-key-here"
 PORT=5000
 ```
 
-6. Set the **root directory** of the service to `backend`
-7. Deploy — Railway will auto-run `npx prisma db push && node src/app.js` on start
+Now, push the database schema to your local MySQL instance:
 
-The app will be live at your Railway-provided URL. The backend serves the frontend, so there's no separate static hosting needed.
-
----
-
-## API routes (quick reference)
-
-```
-POST   /api/auth/signup
-POST   /api/auth/login
-GET    /api/auth/me
-
-GET    /api/projects
-POST   /api/projects
-GET    /api/projects/:id
-PATCH  /api/projects/:id
-DELETE /api/projects/:id
-POST   /api/projects/:id/members
-DELETE /api/projects/:id/members/:userId
-
-GET    /api/tasks
-POST   /api/tasks
-GET    /api/tasks/:id
-PATCH  /api/tasks/:id
-DELETE /api/tasks/:id
-POST   /api/tasks/:id/comments
-
-GET    /api/dashboard
-GET    /api/notifications
-PATCH  /api/notifications/read-all
+```bash
+npm run db:push
 ```
 
----
+*(Optional)* I highly recommend seeding the database to get some dummy data and default accounts (Admin and Member):
 
-## Project structure
-
+```bash
+npm run db:seed
 ```
+
+Finally, start the local development server:
+
+```bash
+npm start
+```
+
+### 2. Frontend Access
+
+The backend Express server automatically serves the frontend static files. Just open your browser and go to:
+
+`http://localhost:5000`
+
+## Deployment
+
+I've configured this project to be incredibly easy to deploy using Railway. Because I optimized the root `package.json`, it is practically a one-click deployment.
+
+1. Connect your GitHub repository to a new Railway project.
+2. Add a **MySQL** database plugin to the Railway project.
+3. In your web service variables, set `DATABASE_URL` (using the Railway MySQL reference) and generate a `JWT_SECRET`.
+4. Railway will automatically detect the Node.js environment, install the backend dependencies, run `npx prisma db push` to migrate the database, and start the app. No custom root directory configuration needed!
+
+## Code Structure
+
+```text
 Task Manager/
 ├── backend/
-│   ├── prisma/schema.prisma   # MySQL schema
+│   ├── prisma/              # Database schema and migrations
 │   ├── src/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── routes/
-│   │   └── app.js
-│   ├── .env.example
+│   │   ├── controllers/     # Business logic
+│   │   ├── middleware/      # Auth & validation checks
+│   │   ├── routes/          # API endpoints
+│   │   └── app.js           # Express server setup
 │   └── package.json
 ├── frontend/
-│   ├── css/style.css
-│   ├── js/
-│   └── index.html
-└── README.md
+│   ├── css/
+│   ├── js/                  # API client and UI logic
+│   └── index.html           # Main SPA entry point
+├── package.json             # Root config for easy deployment
+└── railway.toml             # Railway deployment settings
 ```
+
+Thanks for checking out my project!
