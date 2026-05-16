@@ -28,7 +28,7 @@ Here's the technology I used to put this together:
 ## Live Demo
 
 You can check out the live version of the project here: 
-👉 **[https://taskflow-production-f5cd.up.railway.app](https://taskflow-production-f5cd.up.railway.app)**
+**[https://taskflow-production-f5cd.up.railway.app](https://taskflow-production-f5cd.up.railway.app)**
 
 *Feel free to create your own account or use the demo accounts (if seeded).*
 
